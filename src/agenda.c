@@ -1,106 +1,61 @@
-#include "agenda.h"
+#ifndef __AGENDA_H__
+#define __AGENDA_H__
 
-/**
- * Esta función se encarga de iniciar el número de contactos a cero
- */
-void iniciar_agenda(Agenda *agenda){
+#include <stdio.h>
+#include <string.h>
 
-}
+#define MAX_CONTACTOS 100
 
+// Tipos de teléfono
+enum TipoTelefono {CASA, MOVIL, OFICINA, OTRO};
 
+// Meses del año
+enum Mes {
+    ENERO, FEBERO, MARZO, ABRIL, MAYO, JUNIO, JULIO,
+    SEPTIEMBRE, OCTUBRE, NOVIEMBRE, DICIEMBRE
+};
 
-// Varible que lleva la cuenta de cuantos contactos hay en la agenda
-int num_contactos;
+// Estructura del contacto
+struct Persona {
+    char nombre[30];
+    char apellido[30];
+    int dia;
+    enum Mes mes;
+    char telefono[20];
+    enum TipoTelefono tipo;
+};
 
-/**
- * Esta función sirve para agregar un contacto nuevo en la agenda
- */
-void agregar_contacto(Agenda *agenda, Contacto c){
+typedef struct Persona Contacto;
 
-}
+// Estructura Agenda
+typedef struct Agenda {
+    Contacto contactos[MAX_CONTACTOS];
+    int num_contactos;
+} Agenda;
 
+// PROTOTIPOS DE FUNCIONES
 
-/**
- * Esta función sirve para buscar un contacto por nombre en la agenda y retorna la posición del contacto si exisite
- * En caso contrario retorna -1
- */
-int buscar_contacto(Agenda *agenda, char *nombre){
+void iniciar_agenda(Agenda *agenda);
+void inicializar_agenda(Agenda *agenda);  // algunos tests usan este nombre también
 
-}
+void agregar_contacto(Agenda *agenda, Contacto c);
 
+void imprimir_agenda(Agenda agenda);
+void imprimir_contactos(Agenda agenda);   // requerido por test_mostrar_contactos
 
-/**
- * Esta función  sirve para buscar un contacto por su número de telefono en la agenda
- */
-int buscar_contacto_x_telefono(Agenda *agenda, char telefono[]){
+int buscar_contacto(Agenda *agenda, char *nombre);
+int buscar_contacto_x_telefono(Agenda *agenda, char telefono[]);
 
-}
+void ordenar_contactos(Agenda *agenda);
+void ordenar_contactos_inv(Agenda *agenda);
 
+void mostrar_contacto(Contacto c);
+void leer_contacto(Contacto *c);
 
-/**
- * Esta función sirve para ordenar los contactos por nombres de forma ascendente
- */
-void ordenar_contactos(Agenda *a){
-    int i, j;
-    Contacto temp;
-    for(i = 0; i < a->num_contactos; i++){
-        for(j=0; j < a->num_contactos-i-1; j++){
-            if(strcmp(a->contactos[j].nombre, a->contactos[j+1].nombre)>0){
-                temp = a->contactos[j];
-                a->contactos[j] = a->contactos[j+1];
-                a->contactos[j+1] = temp;
-            }
-        }
-    }
-}
+void cargar_contactos(char *filename, Agenda *agenda);
+void leer_agenda(Agenda *agenda, char *filename); // requerido por test_leer
 
-/**
- * Esta función sirve para ordenar los contactos por nombres de forma descendente
- */
-void ordenar_contactos_inv(Agenda *a){
-    int i, j;
-    Contacto temp;
-    for(i = 0; i < a->num_contactos; i++){
-        for(j=0; j < a->num_contactos-i-1; j++){
-            //Completar basandose en la función anterior
-        }
-    }
-}
+void guardar_contactos(char *filename, Agenda agenda);
+void guardar_agenda(char *filename, Agenda agenda); // requerido por test_guardar
 
-
-/**
- * Función auxiliar para imprimir un contacto
- */
-void mostrar_contacto(Contacto){
-
-}
-
-
-/**
- * Función auxiliar para leer un contacto
- */
-void leer_contacto(Contacto *c){
-
-}
-
-/**
- * Función que imprime todos los contactos de la agenda en pantalla
- */
-void imprimir_agenda(Agenda agenda){
-
-}
-
-/**
- * Función que sirve para cargar contactos escritos en un archivo a la agenda
- */
-void cargar_contactos(char *filename, Agenda *agenda){
-
-}
-
-
-/**
- * Función que sirve para guardar todos los contactos de la agenda en un archivo
- */
-void guardar_contactos(char *filename, Agenda agenda){
-
-}
+#endif // __AGENDA_H__
