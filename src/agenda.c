@@ -1,125 +1,170 @@
-#include "agenda.h"
 #include <stdio.h>
 #include <string.h>
+#include "agenda.h"
 
-/* Inicializa agenda */
-void iniciar_agenda(Agenda *agenda){
-    agenda->num_contactos = 0;
-}
-
-/* Alias porque los tests piden esta función */
-void inicializar_agenda(Agenda *agenda){
+// --------------------------------------------------
+// Alias requerido por test
+// --------------------------------------------------
+void inicializar_agenda(Agenda *agenda) {
     iniciar_agenda(agenda);
 }
 
-/* Agregar contacto */
-void agregar_contacto(Agenda *agenda, Contacto c){
-    if (agenda->num_contactos < MAX_CONTACTOS){
+// --------------------------------------------------
+// Inicializar agenda
+// --------------------------------------------------
+void iniciar_agenda(Agenda *agenda) {
+    agenda->num_contactos = 0;
+}
+
+// --------------------------------------------------
+// Lectura de un contacto (usado en test_leer_contacto.c)
+// --------------------------------------------------
+void leer_contacto(Contacto *c) {
+    scanf("%s %s %d %d %s %d",
+        c->nombre,
+        c->apellido,
+        &c->dia,
+        (int *)&c->mes,
+        c->telefono,
+        (int *)&c->tipo
+    );
+}
+
+// --------------------------------------------------
+// Mostrar un contacto (test_mostrar_contactos.c)
+// --------------------------------------------------
+void mostrar_contacto(Contacto c) {
+    printf("%s %s %d %d %s %d\n",
+        c.nombre,
+        c.apellido,
+        c.dia,
+        c.mes,
+        c.telefono,
+        c.tipo
+    );
+}
+
+// --------------------------------------------------
+// Agregar contacto (test_agregar.c)
+// --------------------------------------------------
+void agregar_contacto(Agenda *agenda, Contacto c) {
+    if (agenda->num_contactos < MAX_CONTACTOS) {
         agenda->contactos[agenda->num_contactos] = c;
         agenda->num_contactos++;
     }
 }
 
-/* Buscar por nombre */
-int buscar_contacto(Agenda *agenda, char *nombre){
-    for (int i = 0; i < agenda->num_contactos; i++){
-        if (strcmp(agenda->contactos[i].nombre, nombre) == 0){
+// --------------------------------------------------
+// Buscar contacto por nombre (test_buscar.c)
+// --------------------------------------------------
+int buscar_contacto(Agenda *agenda, char *nombre) {
+    for (int i = 0; i < agenda->num_contactos; i++) {
+        if (strcmp(agenda->contactos[i].nombre, nombre) == 0) {
             return i;
         }
     }
     return -1;
 }
 
-/* Buscar por teléfono */
-int buscar_contacto_x_telefono(Agenda *agenda, char telefono[]){
-    for (int i = 0; i < agenda->num_contactos; i++){
-        if (strcmp(agenda->contactos[i].telefono, telefono) == 0){
+// --------------------------------------------------
+// Buscar contacto por teléfono
+// --------------------------------------------------
+int buscar_contacto_x_telefono(Agenda *agenda, char telefono[]) {
+    for (int i = 0; i < agenda->num_contactos; i++) {
+        if (strcmp(agenda->contactos[i].telefono, telefono) == 0) {
             return i;
         }
     }
     return -1;
 }
 
-/* Mostrar contacto */
-void mostrar_contacto(Contacto c){
-    printf("%s %s %d %d %s %d\n",
-           c.nombre, c.apellido, c.dia, c.mes, c.telefono, c.tipo);
-}
-
-/* Imprimir agenda (test pide imprimir_contactos) */
-void imprimir_contactos(Agenda a){
-    for (int i = 0; i < a.num_contactos; i++){
-        mostrar_contacto(a.contactos[i]);
-    }
-}
-
-/* Esta función la piden los tests */
-void imprimir_agenda(Agenda a){
-    imprimir_contactos(a);
-}
-
-/* Ordenar A-Z */
-void ordenar_contactos(Agenda *a){
-    Contacto tmp;
-    for (int i = 0; i < a->num_contactos - 1; i++){
-        for (int j = 0; j < a->num_contactos - i - 1; j++){
-            if (strcmp(a->contactos[j].nombre, a->contactos[j+1].nombre) > 0){
-                tmp = a->contactos[j];
-                a->contactos[j] = a->contactos[j+1];
-                a->contactos[j+1] = tmp;
+// --------------------------------------------------
+// Ordenamiento ascendente (burbuja) — test_ordenar.c
+// --------------------------------------------------
+void ordenar_contactos(Agenda *agenda) {
+    for (int i = 0; i < agenda->num_contactos - 1; i++) {
+        for (int j = 0; j < agenda->num_contactos - i - 1; j++) {
+            if (strcmp(agenda->contactos[j].nombre,
+                       agenda->contactos[j+1].nombre) > 0) {
+                Contacto temp = agenda->contactos[j];
+                agenda->contactos[j] = agenda->contactos[j+1];
+                agenda->contactos[j+1] = temp;
             }
         }
     }
 }
 
-/* Ordenar Z-A */
-void ordenar_contactos_inv(Agenda *a){
-    Contacto tmp;
-    for (int i = 0; i < a->num_contactos - 1; i++){
-        for (int j = 0; j < a->num_contactos - i - 1; j++){
-            if (strcmp(a->contactos[j].nombre, a->contactos[j+1].nombre) < 0){
-                tmp = a->contactos[j];
-                a->contactos[j] = a->contactos[j+1];
-                a->contactos[j+1] = tmp;
+// Orden descendente (extra)
+void ordenar_contactos_inv(Agenda *agenda) {
+    for (int i = 0; i < agenda->num_contactos - 1; i++) {
+        for (int j = 0; j < agenda->num_contactos - i - 1; j++) {
+            if (strcmp(agenda->contactos[j].nombre,
+                       agenda->contactos[j+1].nombre) < 0) {
+                Contacto temp = agenda->contactos[j];
+                agenda->contactos[j] = agenda->contactos[j+1];
+                agenda->contactos[j+1] = temp;
             }
         }
     }
 }
 
-/* Leer contacto desde archivo */
-void leer_contacto(Contacto *c){
-    scanf("%s %s %d %d %s %d",
-          c->nombre, c->apellido, &c->dia, &c->mes, c->telefono, &c->tipo);
+// --------------------------------------------------
+// Imprimir agenda completa
+// --------------------------------------------------
+void imprimir_contactos(Agenda agenda) {
+    for (int i = 0; i < agenda.num_contactos; i++) {
+        mostrar_contacto(agenda.contactos[i]);
+    }
 }
 
-/* Guardar contactos */
-void guardar_contactos(char *filename, Agenda agenda){
+// --------------------------------------------------
+// Guardar agenda (test_guardar.c)
+// --------------------------------------------------
+void guardar_agenda(char *filename, Agenda agenda) {
     FILE *f = fopen(filename, "w");
+
     if (!f) return;
 
-    for (int i = 0; i < agenda.num_contactos; i++){
+    for (int i = 0; i < agenda.num_contactos; i++) {
         Contacto c = agenda.contactos[i];
+
         fprintf(f, "%s %s %d %d %s %d\n",
-                c.nombre, c.apellido, c.dia, c.mes, c.telefono, c.tipo);
+            c.nombre,
+            c.apellido,
+            c.dia,
+            c.mes,
+            c.telefono,
+            c.tipo
+        );
     }
 
     fclose(f);
 }
 
-/* Alias porque el test lo pide como leer_agenda */
-void leer_agenda(char *filename, Agenda *agenda){
-    cargar_contactos(filename, agenda);
-}
-
-/* Cargar contactos */
-void cargar_contactos(char *filename, Agenda *agenda){
+// --------------------------------------------------
+// Leer agenda (test_leer.c)
+// --------------------------------------------------
+void leer_agenda(Agenda *agenda, char *filename) {
     FILE *f = fopen(filename, "r");
-    if (!f) return;
 
-    Contacto c;
-    while (fscanf(f, "%s %s %d %d %s %d",
-                  c.nombre, c.apellido, &c.dia, &c.mes, c.telefono, &c.tipo) == 6){
-        agregar_contacto(agenda, c);
+    if (!f) {
+        agenda->num_contactos = 0;
+        return;
+    }
+
+    agenda->num_contactos = 0;
+
+    while (!feof(f)) {
+        Contacto c;
+        if (fscanf(f, "%s %s %d %d %s %d",
+                   c.nombre,
+                   c.apellido,
+                   &c.dia,
+                  (int *)&c.mes,
+                   c.telefono,
+                  (int *)&c.tipo) == 6) {
+            agenda->contactos[agenda->num_contactos++] = c;
+        }
     }
 
     fclose(f);
