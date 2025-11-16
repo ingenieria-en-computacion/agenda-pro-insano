@@ -17,7 +17,7 @@ jobs:
         run: sudo apt-get install -y gcc
 
       - name: Compile project
-        run: gcc src/*.c tests/*.c -o test_agenda
+        run: gcc src/*.c test/*.c -o test_agenda
 
       - name: Test buscar contacto
         id: buscar-test
