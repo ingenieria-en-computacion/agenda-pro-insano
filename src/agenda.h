@@ -27,16 +27,25 @@ typedef struct {
     int num_contactos;
 } Agenda;
 
+void iniciar_agenda(Agenda *agenda);
 void inicializar_agenda(Agenda *agenda);
+
 void agregar_contacto(Agenda *agenda, Contacto c);
+
 int buscar_contacto(Agenda *agenda, char *nombre);
 int buscar_contacto_x_telefono(Agenda *agenda, char telefono[]);
-void ordenar_contactos_inv(Agenda *agenda);
-void ordenar_contactos(Agenda *agenda);
 
+void ordenar_contactos(Agenda *agenda);
+void ordenar_contactos_inv(Agenda *agenda);
+
+void mostrar_contacto(Contacto c);
+void imprimir_agenda(Agenda agenda);
 void imprimir_contactos(Agenda agenda);
 
 void cargar_contactos(char *filename, Agenda *agenda);
+void leer_agenda(Agenda *agenda, char *filename);
+
+void guardar_contactos(char *filename, Agenda agenda);
 void guardar_agenda(char *filename, Agenda agenda);
 
 #endif
