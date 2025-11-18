@@ -49,4 +49,3 @@ void guardar_contactos(char *filename, Agenda agenda);
 void guardar_agenda(char *filename, Agenda agenda);
 
 #endif
-
